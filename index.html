@@ -4,7 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>井字遊戲</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <main class="game" aria-labelledby="game-title">
+    <h1 class="game__title" id="game-title">井字遊戲</h1>
+    <p class="game__status" id="game-status" aria-live="polite">準備開始遊戲！</p>
+    <div class="board" role="grid" aria-label="井字棋盤">
+      <button class="cell" data-cell role="gridcell" aria-label="第 1 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 2 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 3 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 4 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 5 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 6 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 7 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 8 格"></button>
+      <button class="cell" data-cell role="gridcell" aria-label="第 9 格"></button>
+    </div>
+  </main>
+  <script src="js/script.js" defer></script>
 </body>
 </html>
