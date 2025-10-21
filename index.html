@@ -17,6 +17,22 @@
 <body>
   <main class="game" aria-labelledby="game-title">
     <h1 class="game__title" id="game-title">井字遊戲</h1>
+    <div class="game-controls">
+      <div class="control-group">
+        <label>遊戲模式：</label>
+        <input type="radio" id="modePvp" name="gameMode" value="PvP" checked />
+        <label for="modePvp">玩家對戰</label>
+        <input type="radio" id="modePve" name="gameMode" value="PvE" />
+        <label for="modePve">玩家對電腦</label>
+      </div>
+      <div class="control-group difficulty-controls hidden">
+        <label>AI 難度：</label>
+        <input type="radio" id="diffEasy" name="difficulty" value="Easy" checked />
+        <label for="diffEasy">簡單</label>
+        <input type="radio" id="diffHard" name="difficulty" value="Hard" />
+        <label for="diffHard">困難</label>
+      </div>
+    </div>
     <p class="game__status" id="game-status" aria-live="polite">準備開始遊戲！</p>
     <div class="board" role="grid" aria-label="井字棋盤">
       <button class="cell" data-cell role="gridcell" aria-label="第 1 格"></button>
