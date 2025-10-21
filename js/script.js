@@ -1,5 +1,6 @@
 const cells = document.querySelectorAll('[data-cell]');
 const statusElement = document.querySelector('#game-status');
+const restartButton = document.querySelector('#restart-button');
 
 const gameState = {
   board: Array(9).fill(null),
@@ -93,5 +94,23 @@ cells.forEach((cell, index) => {
   cell.dataset.index = index;
   cell.addEventListener('click', handleCellClick);
 });
+
+function restartGame() {
+  gameState.board.fill(null);
+  gameState.currentPlayer = 'X';
+  gameState.isGameActive = true;
+  gameState.winner = null;
+  gameState.isDraw = false;
+
+  cells.forEach((cell) => {
+    cell.textContent = '';
+  });
+
+  updateStatusMessage();
+}
+
+if (restartButton) {
+  restartButton.addEventListener('click', restartGame);
+}
 
 updateStatusMessage();
