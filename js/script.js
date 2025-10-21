@@ -30,6 +30,33 @@ function updateStatusMessage() {
   }
 }
 
+function setCellMark(cell, player, index) {
+  cell.textContent = player;
+  cell.classList.remove('cell--x', 'cell--o');
+  cell.classList.add(player === 'X' ? 'cell--x' : 'cell--o');
+  cell.disabled = true;
+  cell.setAttribute('aria-disabled', 'true');
+  cell.setAttribute('aria-label', `第 ${index + 1} 格，玩家 ${player} 已落子`);
+}
+
+function updateEmptyCellLabels() {
+  cells.forEach((cell, index) => {
+    if (gameState.board[index]) {
+      return;
+    }
+
+    if (gameState.isGameActive) {
+      cell.disabled = false;
+      cell.removeAttribute('aria-disabled');
+      cell.setAttribute('aria-label', `第 ${index + 1} 格，等待玩家 ${gameState.currentPlayer} 落子`);
+    } else {
+      cell.disabled = true;
+      cell.setAttribute('aria-disabled', 'true');
+      cell.setAttribute('aria-label', `第 ${index + 1} 格，遊戲已結束`);
+    }
+  });
+}
+
 function handleCellClick(event) {
   if (!gameState.isGameActive) {
     return;
@@ -45,13 +72,14 @@ function handleCellClick(event) {
   const currentPlayer = gameState.currentPlayer;
 
   gameState.board[cellIndex] = currentPlayer;
-  cell.textContent = currentPlayer;
+  setCellMark(cell, currentPlayer, cellIndex);
 
   if (checkWin(currentPlayer)) {
     gameState.isGameActive = false;
     gameState.winner = currentPlayer;
     gameState.isDraw = false;
     updateStatusMessage();
+    updateEmptyCellLabels();
     return;
   }
 
@@ -60,6 +88,7 @@ function handleCellClick(event) {
     gameState.winner = null;
     gameState.isDraw = true;
     updateStatusMessage();
+    updateEmptyCellLabels();
     return;
   }
 
@@ -67,6 +96,7 @@ function handleCellClick(event) {
   gameState.winner = null;
   gameState.isDraw = false;
   updateStatusMessage();
+  updateEmptyCellLabels();
 }
 
 function checkWin(player) {
@@ -90,10 +120,15 @@ function checkDraw() {
   return gameState.board.every((cell) => cell !== null);
 }
 
-cells.forEach((cell, index) => {
-  cell.dataset.index = index;
-  cell.addEventListener('click', handleCellClick);
-});
+function resetBoard() {
+  cells.forEach((cell, index) => {
+    cell.textContent = '';
+    cell.classList.remove('cell--x', 'cell--o');
+    cell.disabled = false;
+    cell.removeAttribute('aria-disabled');
+    cell.setAttribute('aria-label', `第 ${index + 1} 格`);
+  });
+}
 
 function restartGame() {
   gameState.board.fill(null);
@@ -102,15 +137,19 @@ function restartGame() {
   gameState.winner = null;
   gameState.isDraw = false;
 
-  cells.forEach((cell) => {
-    cell.textContent = '';
-  });
-
+  resetBoard();
+  updateEmptyCellLabels();
   updateStatusMessage();
 }
+
+cells.forEach((cell, index) => {
+  cell.dataset.index = index;
+  cell.addEventListener('click', handleCellClick);
+});
 
 if (restartButton) {
   restartButton.addEventListener('click', restartGame);
 }
 
+updateEmptyCellLabels();
 updateStatusMessage();
